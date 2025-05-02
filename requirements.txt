@@ -4,5 +4,3 @@ bcrypt
 python-dotenv
 Pillow
 streamlit-option-menu
-gridfs
-io
