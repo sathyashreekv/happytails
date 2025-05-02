@@ -1,6 +1,5 @@
 streamlit
 pymongo
 bcrypt
-bson
 python-dotenv
 Pillow
