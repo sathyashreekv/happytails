@@ -64,8 +64,8 @@ if pets:
     # Upload new image
     uploaded_image = st.file_uploader("Upload New Image", type=["jpg", "jpeg", "png"])
     if uploaded_image:
-        image_path = os.path.join("images", uploaded_image.name)
-        os.makedirs("images", exist_ok=True)
+        image_path = os.path.join("pet_images", uploaded_image.name)
+        os.makedirs("pet_images", exist_ok=True)
         with open(image_path, "wb") as f:
             f.write(uploaded_image.getbuffer())
         image_url = image_path
@@ -120,8 +120,8 @@ with st.form("add_pet"):
         else:
             image_path = ""
             if new_image:
-                os.makedirs("images", exist_ok=True)
-                image_path = os.path.join("images", new_image.name)
+                os.makedirs("pet_images", exist_ok=True)
+                image_path = os.path.join("pet_images", new_image.name)
                 with open(image_path, "wb") as f:
                     f.write(new_image.getbuffer())
 
