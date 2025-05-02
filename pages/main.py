@@ -120,21 +120,21 @@ elif selected == "Adopt a Pet":
 
     with col1:
         st.markdown('<div class="pet-card">', unsafe_allow_html=True)
-        st.image("C:/Users/sathy/OneDrive/Desktop/webpet/images - Copy/about-1.jpg", use_container_width=True, caption=None)
+        st.image("images/about-1.jpg", use_container_width=True, caption=None)
         st.markdown("**Name:** Max  \n**Breed:** Labrador  \n**Age:** 2 years  \n**Status:** Available")
         st.markdown('</div>', unsafe_allow_html=True)
 
 
     with col2:
         st.markdown('<div class="pet-card">', unsafe_allow_html=True)
-        st.image("C:/Users/sathy/OneDrive/Desktop/webpet/images - Copy/img10.jpg", use_container_width=True, caption=None)
+        st.image("images/img10.jpg", use_container_width=True, caption=None)
         st.markdown("**Name:** Luna  \n**Breed:** Persian Cat  \n**Age:** 1.5 years  \n**Status:** Available")
         st.markdown('</div>', unsafe_allow_html=True)
 
 
     with col3:
         st.markdown('<div class="pet-card">', unsafe_allow_html=True)
-        st.image("C:/Users/sathy/OneDrive/Desktop/webpet/images - Copy/img18.jpg", use_container_width=True, caption=None)
+        st.image("images/img18.jpg", use_container_width=True, caption=None)
         st.markdown("**Name:** Bella  \n**Breed:** Golden Retriever  \n**Age:** 3 years  \n**Status:** Available")
         st.markdown('</div>', unsafe_allow_html=True)
 
@@ -183,7 +183,7 @@ elif selected == "Gallery":
         ("rocky.jpg", "Rocky"),
     ]
    
-    base_path = "C:/Users/sathy/OneDrive/Desktop/webpet/images - Copy"
+    base_path = "images"
 
 
     for i in range(0, len(images), 3):
