@@ -138,6 +138,7 @@ with st.form("add_pet"):
 
 
             pet_collection.insert_one(new_pet)
+            st.balloons()
             st.success("🎉 New pet added!")
             st.rerun()
 
@@ -178,6 +179,7 @@ if requests:
                 if pet:
                     pet_collection.update_one({"_id": pet["_id"]}, {"$set": {"status": "adopted"}})
                 st.success("Request accepted!")
+                st.balloons()
                 time.sleep(3)
                 st.rerun()
         with col2:
