@@ -247,7 +247,7 @@ for pet in pets:
 
                                 st.success(f"🎉 Your request to adopt {pet['name']} has been submitted!")
                                 st.balloons()
-                                st.experimental_rerun()  # Force refresh
+                                st.rerun()  # Force refresh
                             except Exception as e:
                                 st.error("❌ Failed to submit adoption request.")
                                 st.write(e)
