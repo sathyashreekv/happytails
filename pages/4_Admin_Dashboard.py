@@ -149,7 +149,7 @@ def handle_adoption_request(req, pet_collection, request_collection):
     col1, col2 = st.columns(2)
 
     with col1:
-        if st.button("✅ Accept", key=f"accept_{req['_id']}", disabled=accepted or rejected):
+        if st.button("✅ Accept", key=f"accept_{req['_id']}", disabled=accepted ):
             request_collection.update_one({"_id": req["_id"]}, {"$set": {"status": "accepted"}})
             if pet:
                 pet_collection.update_one({"_id": pet["_id"]}, {"$set": {"status": "adopted"}})
