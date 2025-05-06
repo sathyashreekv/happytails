@@ -28,7 +28,7 @@ A full-fledged Streamlit web application designed to help users adopt pets, trac
 
 ## 🖥️ Demo
 
-👉 **[Launch App on Streamlit]("https://happytails-ljqvzaggq9j5hipluvhyrn.streamlit.app/")**  
+👉 **[Launch App on Streamlit](https://happytails-ljqvzaggq9j5hipluvhyrn.streamlit.app/)**  
 
 
 
