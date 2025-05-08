@@ -7,15 +7,12 @@ from PIL import Image
 from database import pet_collection, request_collection
 import time
 
-
 st.set_page_config(page_title="Admin Dashboard", layout="wide")
 st.title("🐾 Admin Dashboard")
-
 
 # --- Search & Filter --- #
 st.subheader("Search & Filter Pets")
 search_term = st.text_input("Search by Name, Breed, or Status")
-
 
 query = {"$or": [
     {"name": {"$regex": search_term, "$options": "i"}},
@@ -23,9 +20,7 @@ query = {"$or": [
     {"status": {"$regex": search_term, "$options": "i"}}
 ]} if search_term else {}
 
-
 pets = list(pet_collection.find(query))
-
 
 # --- Show all pets --- #
 st.markdown("### All Pets")
@@ -35,7 +30,6 @@ if pets:
 else:
     st.info("No pets found.")
 
-
 # --- Edit or Delete Pet --- #
 st.subheader("✏️ Edit or Delete Pet")
 if pets:
@@ -43,7 +37,6 @@ if pets:
     selected_pet_str = st.selectbox("Select a pet to edit", pet_options)
     selected_id = selected_pet_str.split(" - ")[-1]
     selected_pet = pet_collection.find_one({"_id": ObjectId(selected_id)})
-
 
     # Pre-filled form
     name = st.text_input("Name", value=selected_pet.get("name", ""))
@@ -54,12 +47,10 @@ if pets:
     status = st.selectbox("Status", ["available", "adopted", "pending"],
                           index=["available", "adopted", "pending"].index(selected_pet.get("status", "available")))
 
-
     # Show image
     image_url = selected_pet.get("image", "")
     if image_url:
         st.image(image_url, width=200, caption="Current Image")
-
 
     # Upload new image
     uploaded_image = st.file_uploader("Upload New Image", type=["jpg", "jpeg", "png"])
@@ -69,7 +60,6 @@ if pets:
         with open(image_path, "wb") as f:
             f.write(uploaded_image.getbuffer())
         image_url = image_path
-
 
     # Update button
     if st.button("Update Pet"):
@@ -89,17 +79,14 @@ if pets:
             st.success("✅ Pet updated!")
             st.rerun()
 
-
     # Delete button
     if st.button("❌ Delete Pet"):
         pet_collection.delete_one({"_id": ObjectId(selected_id)})
         st.warning("🗑️ Pet deleted!")
         st.rerun()
 
-
 # --- Add New Pet Section --- #
 st.subheader("➕ Add New Pet")
-
 
 with st.form("add_pet"):
     new_name = st.text_input("Pet Name")
@@ -110,9 +97,7 @@ with st.form("add_pet"):
     new_status = st.selectbox("Status", ["available", "adopted", "pending"])
     new_image = st.file_uploader("Upload Image", type=["jpg", "jpeg", "png"])
 
-
     submitted = st.form_submit_button("Add Pet")
-
 
     if submitted:
         if not new_name:
@@ -125,7 +110,6 @@ with st.form("add_pet"):
                 with open(image_path, "wb") as f:
                     f.write(new_image.getbuffer())
 
-
             new_pet = {
                 "name": new_name,
                 "age": new_age,
@@ -136,54 +120,54 @@ with st.form("add_pet"):
                 "image": image_path
             }
 
-
             pet_collection.insert_one(new_pet)
+            st.balloons()
             st.success("🎉 New pet added!")
             st.rerun()
 
+# --- Helper Function for Adoption Requests --- #
+def handle_adoption_request(req, pet_collection, request_collection):
+    pet = None
+    try:
+        pet_id = ObjectId(req["pet_id"]) if not isinstance(req["pet_id"], ObjectId) else req["pet_id"]
+        pet = pet_collection.find_one({"_id": pet_id})
+    except (InvalidId, TypeError, KeyError):
+        pass
+    pet_name = pet.get("name", "Unknown") if pet else "Unknown"
+
+    st.markdown(f"""
+    **Request ID:** {str(req["_id"])}  
+    **Pet:** {pet_name}  
+    **User:** {req.get("user_name", "N/A")}  
+    **Contact:** {req.get("email", "N/A")}  
+    **Status:** {req.get("status", "pending")}  
+    """)
+
+    accepted = req.get("status") == "accepted"
+    rejected = req.get("status") == "rejected"
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("✅ Accept", key=f"accept_{req['_id']}", disabled=accepted ):
+            request_collection.update_one({"_id": req["_id"]}, {"$set": {"status": "accepted"}})
+            if pet:
+                pet_collection.update_one({"_id": pet["_id"]}, {"$set": {"status": "adopted"}})
+            st.toast(f"🎉 Adoption request for {pet_name} has been accepted!", icon="🎊")
+            st.rerun()
+
+    with col2:
+        if st.button("❌ Reject", key=f"reject_{req['_id']}", disabled=accepted or rejected):
+            request_collection.update_one({"_id": req["_id"]}, {"$set": {"status": "rejected"}})
+            st.toast(f"❌ Adoption request for {pet_name} has been rejected.")
+            st.rerun()
 
 # --- Adoption Request Management --- #
 st.subheader("📋 Adoption Requests")
-
-
 requests = list(request_collection.find())
-
 
 if requests:
     for req in requests:
-        pet = None
-        try:
-            pet_id = ObjectId(req["pet_id"]) if not isinstance(req["pet_id"], ObjectId) else req["pet_id"]
-            pet = pet_collection.find_one({"_id": pet_id})
-        except (InvalidId, TypeError, KeyError):
-            pet = None
-
-
-        pet_name = pet.get("name", "Unknown") if pet else "Unknown"
-
-
-        st.markdown(f"""
-        **Request ID:** {str(req["_id"])}  
-        **Pet:** {pet_name}  
-        **User:** {req.get("user_name", "N/A")}  
-        **Contact:** {req.get("email", "N/A")}  
-        **Status:** {req.get("status", "pending")}  
-        """)
-
-
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button(f"✅ Accept", key=f"accept_{req['_id']}"):
-                request_collection.update_one({"_id": req["_id"]}, {"$set": {"status": "accepted"}})
-                if pet:
-                    pet_collection.update_one({"_id": pet["_id"]}, {"$set": {"status": "adopted"}})
-                st.success("Request accepted!")
-                time.sleep(3)
-                st.rerun()
-        with col2:
-            if st.button(f"❌ Reject", key=f"reject_{req['_id']}"):
-                request_collection.update_one({"_id": req["_id"]}, {"$set": {"status": "rejected"}})
-                st.warning("Request rejected!")
-                st.rerun()
+        handle_adoption_request(req, pet_collection, request_collection)
 else:
     st.info("No adoption requests found.")
