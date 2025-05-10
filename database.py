@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 
 # Load .env file
-load_dotenv()
+ load_dotenv()
 
 # Connect to MongoDB Atlas
 mongo_uri = os.getenv("MONGO_URI")
