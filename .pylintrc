@@ -12,7 +12,7 @@ disable=
     C0116,  # Missing function or method docstring
     C0301,  # Line too long
     W0621,  # Redefining name from outer scope
-    CO411,  # Import order issues
+    C0411,  # Import order issues
     
 
 [FORMAT]
