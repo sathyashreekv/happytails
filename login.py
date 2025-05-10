@@ -1,9 +1,6 @@
-
+""" This is a authentication system file where user can login or signup and role based access"""
 import streamlit as st
-import pymongo
 import bcrypt
-
-from bson import ObjectId
 from database import users_collection as users_col
 
 # Page config
