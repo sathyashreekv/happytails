@@ -1,19 +1,9 @@
-# from pymongo import MongoClient
-# from bson import ObjectId
-# from pymongo import MongoClient
-# import os
-
-# client = MongoClient("mongodb://localhost:27017/pets")
-# db = client["pet_database"]
-# users_collection = db["users"]
-# pet_collection = db["pets"]
-# request_collection = db["requests"]
-
-
+"""This is a base database file here we created collections"""
+import os
 from pymongo import MongoClient
 from bson import ObjectId
 from dotenv import load_dotenv
-import os
+
 
 # Load .env file
 load_dotenv()
