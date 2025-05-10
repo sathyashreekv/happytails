@@ -107,7 +107,6 @@ else:
                 "role": role
             })
             st.success("✅ Signed up successfully!")
-          
             st.session_state.logged_in = True
             st.session_state.user = username
             st.session_state.role = role
