@@ -13,6 +13,8 @@ disable=
     C0301,  # Line too long
     W0621,  # Redefining name from outer scope
     C0411,  # Import order issues
+    C0303,  # Trailing whitespaces
+    C0305,  # Trailing newlines
     
 
 [FORMAT]
