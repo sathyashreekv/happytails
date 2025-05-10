@@ -13,7 +13,8 @@ else:
     for index, pet in enumerate(all_pets):
         with cols[index % 3]:
             st.markdown("---")
-            image_url = pet.get("image") or "https://cdn.pixabay.com/photo/2016/02/19/10/00/dog-1209113_960_720.jpg"
+            image_url = pet.get("image") or 
+            "https://cdn.pixabay.com/photo/2016/02/19/10/00/dog-1209113_960_720.jpg"
             st.image(image_url, use_container_width=True)
             st.markdown(f"### {pet['name']}")
             st.markdown(f"**Breed:** {pet['breed']}")
