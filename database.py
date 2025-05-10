@@ -1,7 +1,6 @@
 """This is a base database file here we created collections"""
 import os
 from pymongo import MongoClient
-from bson import ObjectId
 from dotenv import load_dotenv
 
 
