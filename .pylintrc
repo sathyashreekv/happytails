@@ -9,10 +9,14 @@ disable=
     W0718,  # Catching too general exception Exception
     C0114,  # Missing module docstring
     C0115,  # Missing class docstring
-    C0116   # Missing function or method docstring
+    C0116,  # Missing function or method docstring
+    C0301,  # Line too long
+    W0621,  # Redefining name from outer scope
+    CO411,  # Import order issues
+    
 
 [FORMAT]
-max-line-length=100
+max-line-length=150
 indent-string='    '
 
 [REPORTS]
@@ -28,6 +32,10 @@ max-statements=50
 max-parents=7
 max-attributes=10
 max-public-methods=20
+
+[IMPORTS]
+known-third-party=streamlit,pymongo,PIL
+known-first-party=database
 
 [VARIABLES]
 additional-builtins=st
