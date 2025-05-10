@@ -1,6 +1,5 @@
 """This is Adoption form where user can fill out forms for adption"""
 import streamlit as st
-from bson import ObjectId
 from database import pet_collection, request_collection
 # --- Streamlit page config ---
 st.set_page_config(page_title="Adopt a Pet", layout="wide")
@@ -65,8 +64,8 @@ for pet in pets:
                                 st.success(f"🎉 Your request to adopt {pet['name']} has been submitted!")
                                 st.balloons()
                                 st.rerun()  # Force refresh
-                            except Exception as e:
+                            except Exception as error:
                                 st.error("❌ Failed to submit adoption request.")
-                                st.write(e)
+                                st.write(error)
                         else:
                             st.warning("Please fill all fields before submitting.")
