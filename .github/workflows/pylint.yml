@@ -34,7 +34,7 @@ jobs:
             echo "No Python files found. Skipping pylint."
             exit 0
           fi
-          pylint $FILES > pylint_output.txt || true
+          pylint --rcfile=.pylintrc $FILES > pylint_output.txt || true
           cat pylint_output.txt
           SCORE=$(tail -n 2 pylint_output.txt | grep 'Your code has been rated at' | awk '{print $7}' | cut -d'/' -f1)
           echo "Pylint score is $SCORE"
