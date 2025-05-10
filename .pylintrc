@@ -33,10 +33,6 @@ max-parents=7
 max-attributes=10
 max-public-methods=20
 
-[IMPORTS]
-known-third-party=streamlit,pymongo,PIL
-known-first-party=database
-
 [VARIABLES]
 additional-builtins=st
 
