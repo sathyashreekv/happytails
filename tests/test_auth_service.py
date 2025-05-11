@@ -1,5 +1,7 @@
 # test_auth_service.py
-
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'auth')))
 import pytest
 from auth_service import hash_password, verify_password, create_user, authenticate_user
 
