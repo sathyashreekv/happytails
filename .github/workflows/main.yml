@@ -27,9 +27,19 @@ jobs:
       - name: Run basic Streamlit test
         run: |
           echo "Testing Streamlit app launch"
-          streamlit run login.py --server.headless true &
+          # Run Streamlit app in the background and log output
+          nohup streamlit run login.py --server.headless true & 
+          STREAMLIT_PID=$!
           sleep 10
-          pkill streamlit
+          # Check if Streamlit is running, and then kill the process
+          if ps -p $STREAMLIT_PID > /dev/null; then
+            echo "Streamlit app launched successfully"
+            kill $STREAMLIT_PID
+          else
+            echo "Streamlit app failed to launch"
+            exit 1
+          fi
 
       - name: ✅ CI Success Message
         run: echo "Streamlit app passed CI test ✅"
+

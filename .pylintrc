@@ -1,0 +1,42 @@
+[MASTER]
+ignore=venv,__pycache__,migrations
+init-hook='import sys; sys.path.append(".")'
+
+[MESSAGES CONTROL]
+disable=
+    C0103,  # Invalid name (e.g., module name "3_adoption_form")
+    W0611,  # Unused import
+    W0718,  # Catching too general exception Exception
+    C0114,  # Missing module docstring
+    C0115,  # Missing class docstring
+    C0116,  # Missing function or method docstring
+    C0301,  # Line too long
+    W0621,  # Redefining name from outer scope
+    C0411,  # Import order issues
+    C0303,  # Trailing whitespaces
+    C0305,  # Trailing newlines
+    
+
+[FORMAT]
+max-line-length=150
+indent-string='    '
+
+[REPORTS]
+output-format=colorized
+score=yes
+reports=no
+
+[DESIGN]
+max-args=6
+max-locals=20
+max-branches=12
+max-statements=50
+max-parents=7
+max-attributes=10
+max-public-methods=20
+
+[VARIABLES]
+additional-builtins=st
+
+[TYPECHECK]
+ignored-modules=streamlit

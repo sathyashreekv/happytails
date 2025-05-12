@@ -1,9 +1,6 @@
-
+""" This is a authentication system file where user can login or signup and role based access"""
 import streamlit as st
-import pymongo
 import bcrypt
-
-from bson import ObjectId
 from database import users_collection as users_col
 
 # Page config
@@ -110,7 +107,6 @@ else:
                 "role": role
             })
             st.success("✅ Signed up successfully!")
-          
             st.session_state.logged_in = True
             st.session_state.user = username
             st.session_state.role = role
