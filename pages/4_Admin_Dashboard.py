@@ -26,7 +26,7 @@ pets = list(pet_collection.find(query))
 st.markdown("### All Pets")
 if pets:
     for pet in pets:
-        st.markdown(f"**Name:** {pet.get('name', '')} | **Breed:** {pet.get('breed', '')} | **Status:** {pet.get('status', 'available')}")
+        st.markdown(f"**Name:** {pet.get('name', '')} | **Breed:** {pet.get('breed', '')} | **Status:** {pet.get('status', 'available')}| **Next Vaccination:** {pet.get('next_vaccination', 'N/A')}")
 else:
     st.info("No pets found.")
 
@@ -46,6 +46,17 @@ if pets:
     description = st.text_area("Description", value=selected_pet.get("description", ""))
     status = st.selectbox("Status", ["available", "adopted", "pending"],
                           index=["available", "adopted", "pending"].index(selected_pet.get("status", "available")))
+    import datetime
+
+# Convert to date object if exists
+    vaccination_date = selected_pet.get("next_vaccination")
+    if isinstance(vaccination_date, str):
+       try:
+           vaccination_date = datetime.datetime.strptime(vaccination_date, "%Y-%m-%d").date()
+       except:
+         vaccination_date = None
+
+     next_vaccination = st.date_input("Next Vaccination Date", value=vaccination_date or datetime.date.today())
 
     # Show image
     image_url = selected_pet.get("image", "")
@@ -73,7 +84,8 @@ if pets:
                 "health": health,
                 "description": description,
                 "status": status,
-                "image": image_url
+                "image": image_url,
+                "next_vaccination": str(next_vaccination)
             }
             pet_collection.update_one({"_id": ObjectId(selected_id)}, {"$set": update_fields})
             st.success("✅ Pet updated!")
@@ -94,6 +106,7 @@ with st.form("add_pet"):
     new_breed = st.text_input("Breed")
     new_health = st.text_area("Health Info")
     new_description = st.text_area("Description")
+    new_next_vaccination = st.date_input("Next Vaccination Date")
     new_status = st.selectbox("Status", ["available", "adopted", "pending"])
     new_image = st.file_uploader("Upload Image", type=["jpg", "jpeg", "png"])
 
@@ -117,7 +130,9 @@ with st.form("add_pet"):
                 "health": new_health,
                 "description": new_description,
                 "status": new_status,
-                "image": image_path
+                "image": image_path,
+                "next_vaccination": str(new_next_vaccination),
+
             }
 
             pet_collection.insert_one(new_pet)
