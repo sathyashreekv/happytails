@@ -6,9 +6,9 @@ from twilio.rest import Client
 from database import users_collection as users_col
 
 # Load Twilio credentials from Streamlit secrets
-TWILIO_SID = st.secrets["TWILIO_SID"]
+TWILIO_SID = st.secrets["TWILIO_ACCOUNT_SID"]
 TWILIO_AUTH_TOKEN = st.secrets["TWILIO_AUTH_TOKEN"]
-TWILIO_PHONE = st.secrets["TWILIO_PHONE"]
+TWILIO_PHONE = st.secrets["TWILIO_PHONE_NUMBER"]
 
 client = Client(TWILIO_SID, TWILIO_AUTH_TOKEN)
 
