@@ -1,14 +1,17 @@
-# HappyTails Auth System with OTP and Secure Secrets
 import streamlit as st
 import bcrypt
 import random
 import os
+from twilio.rest import Client
 from database import users_collection as users_col
-from dotenv import load_dotenv
 
-load_dotenv()
+# Load Twilio credentials from Streamlit secrets
+TWILIO_SID = st.secrets["TWILIO_SID"]
+TWILIO_AUTH_TOKEN = st.secrets["TWILIO_AUTH_TOKEN"]
+TWILIO_PHONE = st.secrets["TWILIO_PHONE"]
 
-# ----- Configuration -----
+client = Client(TWILIO_SID, TWILIO_AUTH_TOKEN)
+
 st.set_page_config(page_title="HappyTails Auth", layout="wide")
 
 # ----- CSS -----
@@ -56,16 +59,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ----- Session State -----
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-if "mode" not in st.session_state:
-    st.session_state.mode = "Login"
-if "otp_sent" not in st.session_state:
-    st.session_state.otp_sent = False
-if "generated_otp" not in st.session_state:
-    st.session_state.generated_otp = None
-if "reset_user_id" not in st.session_state:
-    st.session_state.reset_user_id = None
+for key in ["logged_in", "mode", "otp_sent", "generated_otp", "reset_user_id"]:
+    if key not in st.session_state:
+        st.session_state[key] = False if key == "logged_in" else None if key == "generated_otp" else "Login" if key == "mode" else False
 
 # ----- Layout Start -----
 st.markdown('<div class="center-wrap"><div class="form-container">', unsafe_allow_html=True)
@@ -112,8 +108,6 @@ elif st.session_state.mode == "Sign Up":
             st.error("❌ Passwords do not match")
         elif users_col.find_one({"username": username}):
             st.error("🚫 Username already exists!")
-        elif not phone.isdigit() or len(phone) != 10:
-            st.error("📵 Please enter a valid 10-digit phone number.")
         else:
             hashed_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
             users_col.insert_one({
@@ -131,34 +125,31 @@ elif st.session_state.mode == "Sign Up":
             else:
                 st.switch_page("pages/main.py")
 
-# ----- Forgot Password Step 1: Enter Phone -----
+# ----- Forgot Password Step 1 -----
 elif st.session_state.mode == "Forgot" and not st.session_state.otp_sent:
     phone = st.text_input("Enter your registered phone number")
     if st.button("Send OTP"):
         user = users_col.find_one({"phone": phone})
-
         if not user:
-            st.warning("❌ No user found with this phone number.")
-            username_try = st.text_input("Enter your username to associate this phone")
-            if st.button("Register Phone Number"):
-                user_with_username = users_col.find_one({"username": username_try})
-                if user_with_username:
-                    users_col.update_one(
-                        {"_id": user_with_username["_id"]},
-                        {"$set": {"phone": phone}}
-                    )
-                    st.success("✅ Phone number registered. You can now use OTP login.")
-                    st.rerun()
-                else:
-                    st.error("🚫 Username not found.")
+            st.error("❌ No user found with this phone number")
         else:
             otp = str(random.randint(100000, 999999))
             st.session_state.generated_otp = otp
             st.session_state.reset_user_id = user["_id"]
             st.session_state.otp_sent = True
-            st.success(f"✅ OTP sent! (Simulated OTP: {otp})")  # Add SMS later
 
-# ----- Forgot Password Step 2: Enter OTP and Reset Password -----
+            # Send OTP via Twilio
+            try:
+                client.messages.create(
+                    body=f"HappyTails OTP: {otp}",
+                    from_=TWILIO_PHONE,
+                    to=phone
+                )
+                st.success("✅ OTP sent to your phone")
+            except Exception as e:
+                st.error(f"❌ Failed to send OTP: {str(e)}")
+
+# ----- Forgot Password Step 2 -----
 elif st.session_state.mode == "Forgot" and st.session_state.otp_sent:
     entered_otp = st.text_input("Enter OTP")
     new_pw = st.text_input("New Password", type="password")
@@ -180,9 +171,3 @@ elif st.session_state.mode == "Forgot" and st.session_state.otp_sent:
 
 # ----- Layout End -----
 st.markdown('</div></div>', unsafe_allow_html=True)
-
-
-
-
-
-
