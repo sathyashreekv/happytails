@@ -13,9 +13,9 @@ if "TWILIO_SID" in os.environ:
     auth = os.getenv("TWILIO_AUTH_TOKEN")
     twilio_phone = os.getenv("TWILIO_PHONE")
 else:
-    sid = st.secrets["twilio"]["sid"]
-    auth = st.secrets["twilio"]["auth"]
-    twilio_phone = st.secrets["twilio"]["phone"]
+    sid = st.secrets["TWILIO_ACCOUNT_SID"]
+    auth = st.secrets["TWILIO_AUTH_TOKEN"]
+    twilio_phone = st.secrets["TWILIO_PHONE_NUMBER"]
 
 client = Client(sid, auth)
 
