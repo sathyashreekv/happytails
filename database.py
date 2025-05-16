@@ -16,16 +16,6 @@ db = client["pet_database"]
 users_collection = db["users"]
 pet_collection = db["pets"]
 request_collection = db["requests"]
-audit_log_collection= db["audit_log"]
-def log_event(username, action, success=True, role=None, details=""):
-    from datetime import datetime
-    audit_log_collection.insert_one({
-        "username": username,
-        "action": action,
-        "timestamp": datetime.now(),
-        "success": success,
-        "role": role,
-        "details": details
-    })
+
 # Test connection: print one user
 print(users_collection.find_one())

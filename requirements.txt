@@ -4,4 +4,3 @@ bcrypt
 python-dotenv
 Pillow
 streamlit-option-menu
-datetime
