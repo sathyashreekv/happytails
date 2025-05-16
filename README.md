@@ -32,3 +32,15 @@ A full-fledged Streamlit web application designed to help users adopt pets, trac
 
 **[![Lint with Pylint](https://github.com/sathyashreekv/happytails/actions/workflows/pylint.yml/badge.svg)](https://github.com/sathyashreekv/happytails/actions/workflows/pylint.yml)**
 
+![Screenshot 2025-05-16 230944](https://github.com/user-attachments/assets/d5770c28-6d1c-441d-aea8-9c438a6c304f)
+![Screenshot 2025-05-16 230714](https://github.com/user-attachments/assets/ce673ecb-f300-4a26-9c2f-e5feefcd34b9)
+![Screenshot 2025-05-16 230127](https://github.com/user-attachments/assets/97e966d6-989f-4622-bd7b-33769e2bcbf0)
+![Screenshot 2025-05-16 230038](https://github.com/user-attachments/assets/3e70c788-ca14-45be-a18d-dd420a840463)
+![Screenshot 2025-05-16 225938](https://github.com/user-attachments/assets/57530d13-c38e-4c63-b608-3f959655a882)
+
+
+
+
+
+
+
